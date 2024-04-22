@@ -5,11 +5,12 @@ const app = express();
 
 // database connection
 mongoose
-  .connect("mongodb://localhost:27017/expense tracker")
+  .connect("mongodb://localhost:27017/expense_tracker")
   .then(() => console.log("Connecting to MongoDB..."))
   .catch((err) => console.log("Could not connect to MongoDB...", err));
 
 //routes
+app.use(express.json());
 app.use('/api/expenses/', expenses);
 
 // listenner
