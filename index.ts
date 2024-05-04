@@ -1,3 +1,4 @@
+import cors from "cors";
 import express from "express";
 import mongoose from "mongoose";
 import expenses from "./routes/expenses";
@@ -9,9 +10,12 @@ mongoose
   .then(() => console.log("Connecting to MongoDB..."))
   .catch((err) => console.log("Could not connect to MongoDB...", err));
 
-//routes
+// middleware
+app.use(cors());
 app.use(express.json());
-app.use('/api/expenses/', expenses);
+
+//routes
+app.use("/api/expenses/", expenses);
 
 // listenner
 const port = process.env.PORT || 3000;
