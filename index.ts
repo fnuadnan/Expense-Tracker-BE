@@ -1,12 +1,21 @@
 import cors from "cors";
+import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 import expenses from "./routes/expenses";
+
+dotenv.config();
 const app = express();
 
 // database connection
+
+if (!process.env.DB) {
+  console.error("FATAL ERROR: DB is not defined.");
+  process.exit(1);
+}
+
 mongoose
-  .connect("mongodb://localhost:27017/expense_tracker")
+  .connect(process.env.DB)
   .then(() => console.log("Connecting to MongoDB..."))
   .catch((err) => console.log("Could not connect to MongoDB...", err));
 
