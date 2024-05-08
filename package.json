@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
     "test": "jest --verbose --coverage"
+  },
+  "engines": {
+    "node": "v20.1.0"
   },
   "keywords": [],
   "author": "",
