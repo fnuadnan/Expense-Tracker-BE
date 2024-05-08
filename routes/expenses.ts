@@ -5,16 +5,16 @@ import {
   getExpenses,
   postExpense,
 } from "../controllers/expenseController";
-import validateId from "../middleware/validateId";
+import validateObjectId from "../middleware/validateObjectId";
 
 const router = express.Router();
 
 router.get("/", getExpenses);
 
-router.get("/:id", validateId("Genre"), getExpense);
+router.get("/:id", validateObjectId("Genre"), getExpense);
 
 router.post("/", postExpense);
 
-router.delete("/:id", validateId("Genre"), deletedExpense);
+router.delete("/:id", validateObjectId("Genre"), deletedExpense);
 
 export default router;
