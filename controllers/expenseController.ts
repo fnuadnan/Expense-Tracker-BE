@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
 import { Expense, IExpense, validateExpense } from "../models/Expense";
 
+// get all the expenses
 const getExpenses = async (req: Request, res: Response) => {
   try {
     const expenses = await Expense.find();
-    res.send(expenses);
+    res.status(200).send(expenses);
   } catch (error) {
     console.error({ message: "Error getting the expenses:", error });
     res
@@ -13,6 +14,7 @@ const getExpenses = async (req: Request, res: Response) => {
   }
 };
 
+// get an expense by id
 const getExpense = async (req: Request, res: Response) => {
   try {
     const expense = await Expense.findById(req.params.id);
@@ -30,6 +32,7 @@ const getExpense = async (req: Request, res: Response) => {
   }
 };
 
+// post an expense
 const postExpense = async (req: Request, res: Response) => {
   try {
     const result = validateExpense(req.body);
@@ -45,7 +48,7 @@ const postExpense = async (req: Request, res: Response) => {
     });
     await expense.save();
 
-    res.send(expense);
+    res.status(200).send(expense);
   } catch (error) {
     console.error({ message: "Error creating the expense:", error });
     res
@@ -54,6 +57,7 @@ const postExpense = async (req: Request, res: Response) => {
   }
 };
 
+// delete an expense
 const deletedExpense = async (req: Request, res: Response) => {
   try {
     // attempt to delete
