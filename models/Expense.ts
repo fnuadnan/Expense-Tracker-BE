@@ -1,13 +1,6 @@
 import mongoose from "mongoose";
 import { z } from "zod";
-
-// Expense type and interface
-type Category = "Entertainment" | "Utilities" | "Groceries";
-interface IExpense {
-  description: string;
-  amount: number;
-  category: Category;
-}
+import { IExpense } from "../entities/IExpense";
 
 // schema
 const expenseSchema = new mongoose.Schema<IExpense>({
@@ -25,6 +18,23 @@ const expenseSchema = new mongoose.Schema<IExpense>({
     type: String,
     enum: ["Entertainment", "Utilities", "Groceries"],
     required: true,
+  },
+  user: {
+    type: new mongoose.Schema({
+      name: {
+        type: String,
+        required: true,
+        minlength: 3,
+        maxlength: 50,
+      },
+      email: {
+        type: String,
+        required: true,
+        minlength: 5,
+        maxlength: 255,
+        unique: true,
+      },
+    }),
   },
 });
 
@@ -45,4 +55,4 @@ function validateExpense(expense: IExpense) {
   return schema.safeParse(expense);
 }
 
-export {IExpense, expenseSchema, Expense, validateExpense};
+export { Expense, expenseSchema, IExpense, validateExpense };
