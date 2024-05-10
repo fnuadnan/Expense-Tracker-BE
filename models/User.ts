@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import { z } from "zod";
 import { IUser } from "../entities/IUser";
@@ -25,6 +26,16 @@ const userSchema = new mongoose.Schema<IUser>({
   },
 });
 
+// generateAuthToken
+userSchema.methods.generateAuthToken = function (): string {
+  const token = jwt.sign(
+    { _id: this._id, name: this.name, email: this.email },
+    process.env.JWT_PRIVATE_KEY as string,
+    { expiresIn: "1h" }
+  );
+  return token;
+};
+
 // User model
 const User = mongoose.model<IUser>("User", userSchema);
 
@@ -38,4 +49,4 @@ function validateUser(user: IUser) {
   return schema.safeParse(user);
 }
 
-export { IUser, User, validateUser };
+export { User, validateUser };
