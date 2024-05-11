@@ -2,6 +2,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
+import auth from "./routes/auth";
 import expenses from "./routes/expenses";
 import users from "./routes/users";
 
@@ -25,7 +26,8 @@ app.use(express.json());
 //routes
 app.use("/api/expenses/", expenses);
 app.use("/api/users/", users);
+app.use("/api/auth/", auth);
 
 // listenner
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 app.listen(port, () => console.log(`Listenning to port ${port}`));
