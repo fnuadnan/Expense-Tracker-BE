@@ -32,7 +32,14 @@ const authController = async (req: Request, res: Response) => {
     // generate a token
     const token = user.generateAuthToken();
 
-    res.header("x-auth-token", token).send({ message: `Welcome ${user.name}` });
+    res
+      .cookie("x-auth-token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        expires: new Date(Date.now() + 3600000), // expires after one hour
+      })
+      .send({ message: `Welcome ${user.name}` });
   } catch (error) {
     console.error("Error: ", error);
     return res.status(500).send("Internal Server Error");

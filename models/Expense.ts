@@ -32,7 +32,7 @@ const expenseSchema = new mongoose.Schema<IExpense>({
         required: true,
         minlength: 5,
         maxlength: 255,
-        unique: true,
+        unique: false,
       },
     }),
   },

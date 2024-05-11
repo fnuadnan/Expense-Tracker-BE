@@ -1,3 +1,4 @@
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
@@ -22,6 +23,7 @@ mongoose
 // middleware
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser()); // cookie parser
 
 //routes
 app.use("/api/expenses/", expenses);

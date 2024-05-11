@@ -4,7 +4,7 @@ import { Expense, validateExpense } from "../models/Expense";
 import { User } from "../models/User";
 
 interface CustomRequest extends Request {
-  user?: { id: string }; // Assuming `user` object has an `id` string property
+  user?: any; // Assuming `user` object has an `id` string property
 }
 
 // get all expenses
@@ -58,7 +58,7 @@ const postExpense = async (req: CustomRequest, res: Response) => {
   // if authenticated, add the user data to the expense
   if (req.user) {
     try {
-      const user = await User.findById(req.user.id);
+      const user = await User.findById(req.user._id);
       if (user) {
         expenseData.user = {
           _id: user._id,
@@ -66,7 +66,7 @@ const postExpense = async (req: CustomRequest, res: Response) => {
           email: user.email,
         };
       } else {
-        return res.status(404).send({ message: "User not found" });
+        return res.status(404).send({ message: "Could not process the user"});
       }
     } catch (error) {
       console.error("Error fetching user from database:", error);
