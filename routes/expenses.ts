@@ -10,7 +10,7 @@ import verifyToken from "../middleware/verifyToken";
 
 const router = express.Router();
 
-router.get("/", getExpenses);
+router.get("/", verifyToken, getExpenses);
 
 router.get("/:id", validateId("Genre"), getExpense);
 

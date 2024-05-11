@@ -3,14 +3,24 @@ import { IExpense } from "../entities/IExpense";
 import { Expense, validateExpense } from "../models/Expense";
 import { User } from "../models/User";
 
-interface CustomRequest extends Request {
-  user?: any; // Assuming `user` object has an `id` string property
-}
-
 // get all expenses
 const getExpenses = async (req: Request, res: Response) => {
+  // if the user is authenticated, get only their expenses
+  if (req.user) {
+    try {
+      const expenses = await Expense.find({ "user._id": req.user._id });
+      return res.send(expenses);
+    } catch (error) {
+      console.error({ message: "Error getting the expenses:", error });
+      return res
+        .status(500)
+        .send({ message: "Failed to get the expenses", error: error });
+    }
+  }
+
+  // get all expenses without filtering by users
   try {
-    const expenses = await Expense.find();
+    const expenses = await Expense.find({ user: { $exists: false } });
     res.send(expenses);
   } catch (error) {
     console.error({ message: "Error getting the expenses:", error });
@@ -39,7 +49,7 @@ const getExpense = async (req: Request, res: Response) => {
 };
 
 // create a new expense
-const postExpense = async (req: CustomRequest, res: Response) => {
+const postExpense = async (req: Request, res: Response) => {
   // Validate the expense data
   const result = validateExpense(req.body);
   if (!result.success) {
@@ -66,7 +76,7 @@ const postExpense = async (req: CustomRequest, res: Response) => {
           email: user.email,
         };
       } else {
-        return res.status(404).send({ message: "Could not process the user"});
+        return res.status(404).send({ message: "Could not process the user" });
       }
     } catch (error) {
       console.error("Error fetching user from database:", error);

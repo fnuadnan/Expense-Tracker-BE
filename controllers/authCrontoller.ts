@@ -39,7 +39,7 @@ const authController = async (req: Request, res: Response) => {
         sameSite: "strict",
         expires: new Date(Date.now() + 3600000), // expires after one hour
       })
-      .send({ message: `Welcome ${user.name}` });
+      .send({ message: `Hello ${user.name}` });
   } catch (error) {
     console.error("Error: ", error);
     return res.status(500).send("Internal Server Error");

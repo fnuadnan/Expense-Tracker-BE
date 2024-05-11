@@ -43,7 +43,10 @@ const registerUser = async (req: Request, res: Response) => {
         sameSite: "strict",
         expires: new Date(Date.now() + 3600000), // expires after one hour
       })
-      .send(_.pick(user, ["_id", "name", "email"]));
+      .send({
+        message: `Welcome on board, ${user.name}!`,
+        user: _.pick(user, ["_id", "name", "email"]),
+      });
   } catch (error) {
     console.error("Error: ", error);
     return res.status(500).send("Internal Server Error");
